@@ -1,0 +1,62 @@
+﻿@page "/todo"
+@rendermode InteractiveServer
+
+<PageTitle>Todo</PageTitle>
+
+<h3>Todo (@todos.Count(todo => !todo.IsDone))</h3>
+
+<h2>Tarefas Pendentes</h2>
+<ul>
+
+	@foreach (var todo in todos.Where(t => !t.IsDone))
+	{
+		<li>
+			@todo.Title
+		</li>
+	}
+</ul>
+
+
+<h2>Tarefas Concluidas</h2>
+<ul>
+
+	@foreach (var todo in todos.Where(t => t.IsDone))
+	{
+		<li>
+			@todo.Title
+		</li>
+	}
+</ul>
+
+
+
+<ul>
+
+	@foreach (var todo in todos)
+	{
+		<li>
+			<input type="checkbox" @bind="todo.IsDone" />
+			<input @bind="todo.Title" />
+		</li>
+	}
+</ul>
+
+<input placeholder="Something todo" @bind="newTodo" />
+<button @onclick="AddTodo">Add todo</button>
+
+@code {
+	private List<TodoItem> todos = [];
+	private string? newTodo;
+
+	private void AddTodo()
+	{
+		if (!string.IsNullOrWhiteSpace(newTodo))
+		{
+			todos.Add(new TodoItem { Title = newTodo });
+			newTodo = string.Empty;
+		}
+	}
+}
+
+
+<p>"The future depends on what you do today. - Mahatma Gandhi"</p>
